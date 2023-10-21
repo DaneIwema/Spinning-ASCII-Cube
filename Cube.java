@@ -18,6 +18,11 @@ public class Cube {
         System.out.print(toString(display));
         System.out.printf("Center: %d, %d%n", center[0], center[1]);
         System.out.printf("point1: %d, %d%n", rotateX(45), rotateY(45));
+        System.out.printf("angle: %d%n", (int)getAngle(rotateX(45), rotateY(45), rotateX(135), rotateY(135)));
+    }
+
+    public static void drawVector(int x, int y, int xTwo, int yTwo){
+        
     }
 
     public static int rotateX(int rotateAmount){
@@ -28,9 +33,8 @@ public class Cube {
         return center[1] + (int)Math.round(cubeSize * Math.sin(Math.toRadians(rotateAmount)));
     }
 
-    public int drawVector(int x, int y, int xTwo, int yTwo){
-        
-        return
+    public static double getAngle(int x, int y, int xTwo, int yTwo){
+        return Math.atan2(yTwo - y, xTwo - x) * 180 / Math.PI;
     }
 
     public static String toString(String [][] display){
