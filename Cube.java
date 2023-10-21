@@ -22,7 +22,9 @@ public class Cube {
     }
 
     public static void drawVector(int x, int y, int xTwo, int yTwo){
-        
+        while() {
+            
+        }
     }
 
     public static int rotateX(int rotateAmount){
