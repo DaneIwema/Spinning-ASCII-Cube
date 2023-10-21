@@ -1,8 +1,8 @@
 public class Cube {
-    public static int cubeSize = 3;
+    public static double cubeSize = 5;
 
-    public static int height = 30; 
-    public static int width = 70;
+    public static int height = 20; 
+    public static int width = 40;
 
     public static int [] center = {width/2, height/2};
 
@@ -11,24 +11,27 @@ public class Cube {
     public static void main(String [] args){
         String [][] display = new String[width][height];
         display[center[0]][center[1]] = "0";
-        for (int i = 0; i < 361; i++)
-            display[rotateX(i)][rotateY(i)] = "x";
+        display[rotateX(45)][rotateY(45)] = "x";
+        display[rotateX(135)][rotateY(135)] = "x";
+        display[rotateX(225)][rotateY(225)] = "x";
+        display[rotateX(315)][rotateY(315)] = "x";
         System.out.print(toString(display));
         System.out.printf("Center: %d, %d%n", center[0], center[1]);
         System.out.printf("point1: %d, %d%n", rotateX(45), rotateY(45));
     }
 
     public static int rotateX(int rotateAmount){
-        return center[0] + ((cubeSize*2) * (int)Math.cos(Math.toRadians(rotateAmount)));
+        return center[0] + (int)Math.round((cubeSize*2) * Math.cos(Math.toRadians(rotateAmount)));
     }
 
     public static int rotateY(int rotateAmount){
-        return center[1] + (cubeSize * (int)Math.sin(Math.toRadians(rotateAmount)));
+        return center[1] + (int)Math.round(cubeSize * Math.sin(Math.toRadians(rotateAmount)));
     }
 
-    // public int drawVector(int x, int y){
+    public int drawVector(int x, int y, int xTwo, int yTwo){
         
-    // }
+        return
+    }
 
     public static String toString(String [][] display){
         StringBuilder builder = new StringBuilder();
