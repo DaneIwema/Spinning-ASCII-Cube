@@ -6,41 +6,64 @@ public class Cube {
 
     public static int [] center = {width/2, height/2};
 
+    public static int [][] corners = new int [4][2];
+
     public static char [] faces = {'@', '#', '$', '%', '&', '*'};
 
+    public static String [][] display = new String[width][height];
+
     public static void main(String [] args){
-        String [][] display = new String[width][height];
+        initializeCorners();
+        drawCorners();
         display[center[0]][center[1]] = "0";
-        display[rotateX(45, cubeSize)][rotateY(45, cubeSize)] = "1";
-        display[rotateX(135, cubeSize)][rotateY(135, cubeSize)] = "2";
-        display[rotateX(225, cubeSize)][rotateY(225, cubeSize)] = "3";
-        display[rotateX(315, cubeSize)][rotateY(315, cubeSize)] = "4";
+        drawLine(corners[0][0], corners[0][1], corners[2][0], corners[2][1]);
+        // drawLine(corners[1][0], corners[1][1], corners[2][0], corners[2][1]);
         System.out.print(toString(display));
         System.out.printf("Center: %d, %d%n", center[0], center[1]);
-        System.out.printf("point1: %d, %d%n", rotateX(45, cubeSize), rotateY(45, cubeSize));
-        System.out.printf("angle: %d%n", (int)getAngle(rotateX(45, cubeSize), rotateY(45, cubeSize), rotateX(135, cubeSize), rotateY(135, cubeSize)));
+        System.out.printf("point 1: %d, %d%n", rotateX(center[0], 45, cubeSize), rotateY(center[1], 45, cubeSize));
+        System.out.printf("point 2: %d, %d%n", rotateX(center[0], 135, cubeSize), rotateY(center[1], 135, cubeSize));
+        System.out.printf("Distance: %d%n", distance(corners[1][0], corners[1][1], corners[2][0], corners[2][1]));
+        System.out.printf("angle: %d%n", (int)getAngle(corners[1][0], corners[1][1], corners[2][0], corners[2][1]));
     }
 
-    public static void drawLine(int x, int y, int xTwo, int yTwo){
-        for(double i = 0; i < distance(x, y, xTwo, yTwo); i++){
-            display[rotateX(getAngle(x, y, xTwo, yTwo), i)][] = "x";
+    public static void initializeCorners(){
+        int j = 45;
+        for (int i = 0; i < 4; i++){
+            corners[i][0] = rotateX(center[0], j, cubeSize);
+            corners[i][1] = rotateY(center[1], j, cubeSize);
+            j = j + 90;
         }
     }
 
-    public static int rotateX(int rotateAmount, double radius){
-        return center[0] + (int)Math.round((radius*2) * Math.cos(Math.toRadians(rotateAmount)));
+    public static void drawCorners(){
+        for (int i = 0; i < 4; i++){
+            StringBuilder builder = new StringBuilder();
+            builder.append(i);
+            display[corners[i][0]][corners[i][1]] = builder.toString();
+        }
     }
 
-    public static int rotateY(int rotateAmount, double radius){
-        return center[1] + (int)Math.round(radius * Math.sin(Math.toRadians(rotateAmount)));
+    public static void drawLine(int xOne, int yOne, int xTwo, int yTwo){
+        int distance = distance(xOne, yOne, xTwo, yTwo);
+        int angle = getAngle(xOne, yOne, xTwo, yTwo);
+        for(double i = 0; i < distance-1; i++)
+            display[rotateX(xOne, angle, i)][rotateY(yOne, angle, i)] = "x";
     }
 
-    public static double getAngle(int x, int y, int xTwo, int yTwo){
-        return Math.atan2(yTwo - y, xTwo - x) * 180 / Math.PI;
+    public static int rotateX(int xC, int rotateAmount, double radius){
+        return xC+ (int)Math.round((radius) * Math.cos(Math.toRadians(rotateAmount)));
     }
 
-    public static int distance(int x, int y, int xTwo, int yTwo){
-        return (int)Math.round(Math.sqrt(((xTwo - x)^2) + ((yTwo - y)^2)));
+    public static int rotateY(int yC, int rotateAmount, double radius){
+        return yC + (int)Math.round(radius * Math.sin(Math.toRadians(rotateAmount)));
+    }
+
+    public static int getAngle(int x, int y, int xTwo, int yTwo){
+        return (int)Math.round(Math.atan2(yTwo - y, xTwo - x) * 180 / Math.PI);
+    }
+
+    public static int distance(int xOne, int yOne, int xTwo, int yTwo){
+        return (int)Math.round(Math.sqrt(((Math.pow((xTwo - xOne), 2)) + (Math.pow((yTwo - yOne), 2)))));
     }
 
     public static String toString(String [][] display){
