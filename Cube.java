@@ -11,32 +11,36 @@ public class Cube {
     public static void main(String [] args){
         String [][] display = new String[width][height];
         display[center[0]][center[1]] = "0";
-        display[rotateX(45)][rotateY(45)] = "x";
-        display[rotateX(135)][rotateY(135)] = "x";
-        display[rotateX(225)][rotateY(225)] = "x";
-        display[rotateX(315)][rotateY(315)] = "x";
+        display[rotateX(45, cubeSize)][rotateY(45, cubeSize)] = "1";
+        display[rotateX(135, cubeSize)][rotateY(135, cubeSize)] = "2";
+        display[rotateX(225, cubeSize)][rotateY(225, cubeSize)] = "3";
+        display[rotateX(315, cubeSize)][rotateY(315, cubeSize)] = "4";
         System.out.print(toString(display));
         System.out.printf("Center: %d, %d%n", center[0], center[1]);
-        System.out.printf("point1: %d, %d%n", rotateX(45), rotateY(45));
-        System.out.printf("angle: %d%n", (int)getAngle(rotateX(45), rotateY(45), rotateX(135), rotateY(135)));
+        System.out.printf("point1: %d, %d%n", rotateX(45, cubeSize), rotateY(45, cubeSize));
+        System.out.printf("angle: %d%n", (int)getAngle(rotateX(45, cubeSize), rotateY(45, cubeSize), rotateX(135, cubeSize), rotateY(135, cubeSize)));
     }
 
-    public static void drawVector(int x, int y, int xTwo, int yTwo){
-        while() {
-            
+    public static void drawLine(int x, int y, int xTwo, int yTwo){
+        for(double i = 0; i < distance(x, y, xTwo, yTwo); i++){
+            display[rotateX(getAngle(x, y, xTwo, yTwo), i)][] = "x";
         }
     }
 
-    public static int rotateX(int rotateAmount){
-        return center[0] + (int)Math.round((cubeSize*2) * Math.cos(Math.toRadians(rotateAmount)));
+    public static int rotateX(int rotateAmount, double radius){
+        return center[0] + (int)Math.round((radius*2) * Math.cos(Math.toRadians(rotateAmount)));
     }
 
-    public static int rotateY(int rotateAmount){
-        return center[1] + (int)Math.round(cubeSize * Math.sin(Math.toRadians(rotateAmount)));
+    public static int rotateY(int rotateAmount, double radius){
+        return center[1] + (int)Math.round(radius * Math.sin(Math.toRadians(rotateAmount)));
     }
 
     public static double getAngle(int x, int y, int xTwo, int yTwo){
         return Math.atan2(yTwo - y, xTwo - x) * 180 / Math.PI;
+    }
+
+    public static int distance(int x, int y, int xTwo, int yTwo){
+        return (int)Math.round(Math.sqrt(((xTwo - x)^2) + ((yTwo - y)^2)));
     }
 
     public static String toString(String [][] display){
