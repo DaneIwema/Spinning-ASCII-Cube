@@ -16,7 +16,7 @@ public class Cube {
         initializeCorners();
         drawCorners();
         display[center[0]][center[1]] = "0";
-        drawLine(corners[0][0], corners[0][1], corners[2][0], corners[2][1]);
+        drawLine(center[0], center[1], corners[0][0], corners[0][1]);
         // drawLine(corners[1][0], corners[1][1], corners[2][0], corners[2][1]);
         System.out.print(toString(display));
         System.out.printf("Center: %d, %d%n", center[0], center[1]);
@@ -44,14 +44,19 @@ public class Cube {
     }
 
     public static void drawLine(int xOne, int yOne, int xTwo, int yTwo){
-        int distance = distance(xOne, yOne, xTwo, yTwo);
-        int angle = getAngle(xOne, yOne, xTwo, yTwo);
-        for(double i = 0; i < distance-1; i++)
-            display[rotateX(xOne, angle, i)][rotateY(yOne, angle, i)] = "x";
+        int m = (yTwo - yOne) / (xTwo - xOne); 
+        for (x = x1; x <= x2; x++)  
+        { 
+            
+            // Assuming that the round function finds 
+            // closest integer to a given float. 
+            y = round(mx + c); 
+            print(x, y); 
+        } 
     }
 
     public static int rotateX(int xC, int rotateAmount, double radius){
-        return xC+ (int)Math.round((radius) * Math.cos(Math.toRadians(rotateAmount)));
+        return xC+ (int)Math.round((radius*2) * Math.cos(Math.toRadians(rotateAmount)));
     }
 
     public static int rotateY(int yC, int rotateAmount, double radius){
