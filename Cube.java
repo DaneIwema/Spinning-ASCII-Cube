@@ -44,14 +44,19 @@ public class Cube {
     }
 
     public static void drawLine(int xOne, int yOne, int xTwo, int yTwo){
+        if (xOne < xTwo && yOne < yTwo){
+
+        }
+        else{
+            
+        }
         int m = (yTwo - yOne) / (xTwo - xOne); 
-        for (x = x1; x <= x2; x++)  
-        { 
+        for (int x = xOne; x <= xTwo; x++){ 
             
             // Assuming that the round function finds 
             // closest integer to a given float. 
-            y = round(mx + c); 
-            print(x, y); 
+            int y = Math.round((m*x) + c); 
+            display[x][y] = "x"; 
         } 
     }
 
