@@ -16,7 +16,8 @@ public class Cube {
         display = new String[width][height];
         initializeCorners();
         drawCorners();
-        connectCorners();
+        drawLine(corners[3], corners[1]);
+        // connectCorners();
         System.out.print(toString(display));
     }
 
@@ -38,35 +39,43 @@ public class Cube {
     }
 
     public static void connectCorners(){
-        for(int i = 0; i < 4; i++){
-            drawLine(corners[i][0], corners[i][1], corners[i+1][0], corners[i+1][1]);
-        }
+        for(int i = 0; i < 3; i++)
+            drawLine(corners[i], corners[i+1]);
+        drawLine(corners[3], corners[0]);
     }
 
-    public static void drawLine(double xOne, double yOne, double xTwo, double yTwo){
-        double m = (yTwo - yOne)/(xTwo - xOne);
-        double b = yOne - (m*xOne);
-        if (xOne < xTwo){
-            for (int x = (int)Math.round(xOne); x <= xTwo; x++){ 
-                int y = (int)Math.round((m*x) + b); 
-                display[x][y] = "x"; 
+    public static void drawLine(double [] coordOne, double [] coordTwo){
+        double m = (coordTwo[1] - coordOne[1])/(coordTwo[0] - coordOne[0]);
+        double b = coordOne[1] - (m*coordOne[0]);
+        if (coordOne[0] < coordTwo[0] && coordOne[1] < coordTwo[1]){
+            for (double x = coordOne[0]; x <= coordTwo[0]; x++){ 
+                double y = (m*x) + b; 
+                display[rti(x)][rti(y)] = "x"; 
             } 
         }
-        else{
-            for (int x = (int)Math.round(xTwo); x <= xOne; x++){ 
-                int y = (int)Math.round((m*x) + b); 
-                display[x][y] = "x"; 
+        else if(coordTwo[0] < coordOne[0] && coordTwo[1] < coordOne[1]){
+            for (double x = coordTwo[0]; x <= coordOne[0]; x++){ 
+                double y = (m*x) + b; 
+                display[rti(x)][rti(y)] = "x"; 
             } 
         }
         
     }
 
-    public static double rotateX(int xC, int rotateAmount, double radius){
-        return xC+ Math.round((radius*2) * Math.cos(Math.toRadians(rotateAmount)));
+    private static void LeftToRight(){
+
     }
 
-    public static double rotateY(int yC, int rotateAmount, double radius){
-        return yC + Math.round(radius * Math.sin(Math.toRadians(rotateAmount)));
+    private static void UpToDown(){
+        
+    }
+
+    public static int rotateX(int xC, int rotateAmount, double radius){
+        return xC + (int)Math.round((radius*2) * Math.cos(Math.toRadians(rotateAmount)));
+    }
+
+    public static int rotateY(int yC, int rotateAmount, double radius){
+        return yC + (int)Math.round(radius * Math.sin(Math.toRadians(rotateAmount)));
     }
 
     public static String toString(String [][] display){
@@ -85,11 +94,7 @@ public class Cube {
         return builder.toString();
     }
 
-    public static int getAngle(int x, int y, int xTwo, int yTwo){
-        return (int)Math.round(Math.atan2(yTwo - y, xTwo - x) * 180 / Math.PI);
-    }
-
-    public static int distance(int xOne, int yOne, int xTwo, int yTwo){
-        return (int)Math.round(Math.sqrt(((Math.pow((xTwo - xOne), 2)) + (Math.pow((yTwo - yOne), 2)))));
+    public static int rti(double num){
+        return (int)Math.round(num);
     }
 }
