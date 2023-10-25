@@ -1,83 +1,64 @@
 public class Cube {
-    public static double cubeSize = 5;
+    public static double cubeRad = 10;
 
-    public static int height = 20; 
-    public static int width = 40;
+    public static double A, B;
 
-    public static int [] center = {width/2, height/2};
+    public static int height = (int)(cubeRad*2.5);
+    public static int width = (int)cubeRad*5;
+    public static int length = (int)cubeRad*5;
 
-    public static double [][] corners = new double [4][2];
+    public static int [] center = {width/2, height/2, length/2};
 
-    public static char [] faces = {'@', '#', '$', '%', '&', '*'};
+    public static double [][] corners = new double [8][2];
+
+    public static String [] greyScale = {".", ":", "-", "=", "+", "*", "#", "%", "@"};
 
     public static String [][] display;
 
-    public static void main(String [] args){
+    public static void main(String [] args) throws InterruptedException{
+        double[] coord = new double[] {0, 0};
         display = new String[width][height];
-        initializeCorners();
-        drawCorners();
-        drawLine(corners[3], corners[1]);
-        // connectCorners();
-        System.out.print(toString(display));
+        display[center[0]][center[1]] = "0";
+
+        for (coord[0] = 1; coord[0] < 180; coord[0] = coord[0] + 2){
+            // double slot = (rotateZ(coord));
+            // System.out.println(rti(slot / ((cubeRad*2)/greyScale.length)) + 4);
+            toDisplay(rotateX(coord),rotateY(coord), rotateZ(coord));
+            // System.out.print(toString(display));
+            Thread.sleep(50);
+        }
     }
 
     public static void initializeCorners(){
-        int j = 45;
-        for (int i = 0; i < 4; i++){
-            corners[i][0] = rotateX(center[0], j, cubeSize);
-            corners[i][1] = rotateY(center[1], j, cubeSize);
-            j = j + 90;
-        }
-    }
-
-    public static void drawCorners(){
-        for (int i = 0; i < 4; i++){
-            StringBuilder builder = new StringBuilder();
-            builder.append(i);
-            display[(int)Math.round(corners[i][0])][(int)Math.round(corners[i][1])] = builder.toString();
-        }
-    }
-
-    public static void connectCorners(){
-        for(int i = 0; i < 3; i++)
-            drawLine(corners[i], corners[i+1]);
-        drawLine(corners[3], corners[0]);
+        
     }
 
     public static void drawLine(double [] coordOne, double [] coordTwo){
-        double m = (coordTwo[1] - coordOne[1])/(coordTwo[0] - coordOne[0]);
-        double b = coordOne[1] - (m*coordOne[0]);
-        if (coordOne[0] < coordTwo[0] && coordOne[1] < coordTwo[1]){
-            for (double x = coordOne[0]; x <= coordTwo[0]; x++){ 
-                double y = (m*x) + b; 
-                display[rti(x)][rti(y)] = "x"; 
-            } 
-        }
-        else if(coordTwo[0] < coordOne[0] && coordTwo[1] < coordOne[1]){
-            for (double x = coordTwo[0]; x <= coordOne[0]; x++){ 
-                double y = (m*x) + b; 
-                display[rti(x)][rti(y)] = "x"; 
-            } 
-        }
         
     }
 
-    private static void LeftToRight(){
-
+    public static double rotateX(double [] coord){
+        return cubeRad * Math.sin(Math.toRadians(coord[0])) * Math.cos(Math.toRadians(coord[1]));
     }
 
-    private static void UpToDown(){
-        
+    public static double rotateY(double [] coord){
+        return cubeRad * Math.sin(Math.toRadians(coord[0])) * Math.sin(Math.toRadians(coord[1]));
     }
 
-    public static int rotateX(int xC, int rotateAmount, double radius){
-        return xC + (int)Math.round((radius*2) * Math.cos(Math.toRadians(rotateAmount)));
+    public static double rotateZ(double [] coord){
+        return cubeRad * Math.cos(Math.toRadians(coord[0]));
     }
 
-    public static int rotateY(int yC, int rotateAmount, double radius){
-        return yC + (int)Math.round(radius * Math.sin(Math.toRadians(rotateAmount)));
-    }
+    private static void toDisplay(double x, double y, double z){
 
+
+
+
+        int depth = rti(z / ((cubeRad*2)/greyScale.length)) + 4;
+        System.out.println(depth+4);
+        // display[(center[0] + (rti((x))*2))][center[1] + rti(y)] = greyScale[depth+4];
+    }
+    
     public static String toString(String [][] display){
         StringBuilder builder = new StringBuilder();
         builder.append("\033[2J");
