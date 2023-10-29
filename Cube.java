@@ -37,6 +37,9 @@ public class Cube {
                     (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][1]])*2) + x,
                     (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][1]])) + y
                 );
+                if (i == 0) {
+                    buffer[(int)Math.round(rotateX(cubeVerticies[0]))*2][(int)Math.round(rotateY(cubeVerticies[0]))] = 'X';
+                }
             }
             System.out.print(toDisplay(buffer));
             Thread.sleep(80);
@@ -82,7 +85,7 @@ public class Cube {
         int D = (2 * dy) - dx;
         int y = y0;
         for (int x = x0; x < x1; x++){
-            buffer[x][y] = 'x';
+            buffer[x][y] = '.';
             if (D > 0) {
                 y = y + yi;
                 D = D + (2 * (dy - dx));
@@ -104,7 +107,7 @@ public class Cube {
         int x = x0;
 
         for (int y = y0; y < y1; y++){
-            buffer[x][y] = 'x';
+            buffer[x][y] = '.';
             if (D > 0) {
                 x = x + xi;
                 D = D + (2 * (dx - dy));
