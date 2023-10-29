@@ -37,10 +37,8 @@ public class Cube {
                     (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][1]])*2) + x,
                     (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][1]])) + y
                 );
-                if (i == 0) {
-                    buffer[(int)Math.round(rotateX(cubeVerticies[0]))*2][(int)Math.round(rotateY(cubeVerticies[0]))] = 'X';
-                }
             }
+            buffer[(int)Math.round(rotateX(cubeVerticies[cubeEdges[0][0]])*2) + x][(int)Math.round(rotateY(cubeVerticies[cubeEdges[0][0]])) + y] = 'X';
             System.out.print(toDisplay(buffer));
             Thread.sleep(80);
         }
