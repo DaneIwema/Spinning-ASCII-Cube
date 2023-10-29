@@ -1,5 +1,11 @@
 public class Cube {
-    public static float r = 7.0f;
+    public static float r = 5.0f;
+    public static Shape shape = Shape.cube;
+
+    enum Shape{
+        cube,
+        triangle
+    }
 
     public static float A, B, C;
 
@@ -9,38 +15,54 @@ public class Cube {
     public static int x = width/2;
     public static int y = height/2;
 
-    public static char [][] buffer;
-    public static float [][] zBuffer;
+    public static String [][] buffer;
     public static char [] faces = {'@', '#', '$', '%', '&', '*'};
+    public static float [][] verticies;
+    public static int [][] edges;
+    //cube shape
+    public static float [][] cubeVerticies = new float [][] {
+        {-r, -r, -r}, {-r, -r, r}, {-r, r, -r}, {-r, r, r},
+        {r, -r, -r}, {r, -r, r}, {r, r, -r}, {r, r, r}
+    };
+    public static int[][] cubeEdges = {
+        {0, 1}, {1, 3}, {3, 2}, {2, 0},
+        {4, 5}, {5, 7}, {7, 6}, {6, 4},
+        {0, 4}, {1, 5}, {2, 6}, {3, 7}
+    };
 
+    //triangle shape
+    public static float [][] triangleVerticies = new float[][] {
+        //top
+        {0, r, 0}, {-r, -r, r}, {r, -r, r}, {r, -r, -r}
+    };
+    public static int[][] triangleEdges = {
+        {0, 1}, {0, 2}, {0, 3}, {1, 2}, {2, 3}, {3, 1}
+    };
     public static void main(String [] args) throws InterruptedException{
-        float [][] cubeVerticies = new float [][] {
-            {-r, -r, -r}, {-r, -r, r}, {-r, r, -r}, {-r, r, r},
-            {r, -r, -r}, {r, -r, r}, {r, r, -r}, {r, r, r}
-        };
-        int[][] cubeEdges = {
-            {0, 1}, {1, 3}, {3, 2}, {2, 0},
-            {4, 5}, {5, 7}, {7, 6}, {6, 4},
-            {0, 4}, {1, 5}, {2, 6}, {3, 7}
-        };
-        zBuffer = new float [width][height];
-        // buffer[x][y] = '0';
+        if (shape == Shape.cube){
+            verticies = cubeVerticies;
+            edges = cubeEdges;
+        }
+        if (shape == Shape.triangle){
+            verticies = triangleVerticies;
+            edges = triangleEdges;
+        }
+        // zBuffer = new float [width][height];
         while (true){
-            buffer = new char [width][height];
+            buffer = new String [width][height];
             A += 0.05f;
             B += 0.05f;
             C += 0.01f;
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < edges.length; i++) {
                 drawVector(
-                    (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][0]])*2) + x,
-                    (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][0]])) + y,
-                    (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][1]])*2) + x,
-                    (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][1]])) + y
+                    (int)Math.round(rotateX(verticies[edges[i][0]])*2) + x,
+                    (int)Math.round(rotateY(verticies[edges[i][0]])) + y,
+                    (int)Math.round(rotateX(verticies[edges[i][1]])*2) + x,
+                    (int)Math.round(rotateY(verticies[edges[i][1]])) + y
                 );
             }
-            buffer[(int)Math.round(rotateX(cubeVerticies[cubeEdges[0][0]])*2) + x][(int)Math.round(rotateY(cubeVerticies[cubeEdges[0][0]])) + y] = 'X';
             System.out.print(toDisplay(buffer));
-            Thread.sleep(80);
+            Thread.sleep(10);
         }
     }
 
@@ -83,7 +105,7 @@ public class Cube {
         int D = (2 * dy) - dx;
         int y = y0;
         for (int x = x0; x < x1; x++){
-            buffer[x][y] = '.';
+            buffer[x][y] = "\033[48;2;180;0;158m \033[0m";
             if (D > 0) {
                 y = y + yi;
                 D = D + (2 * (dy - dx));
@@ -105,7 +127,7 @@ public class Cube {
         int x = x0;
 
         for (int y = y0; y < y1; y++){
-            buffer[x][y] = '.';
+            buffer[x][y] = "\033[48;2;180;0;158m \033[0m";
             if (D > 0) {
                 x = x + xi;
                 D = D + (2 * (dx - dy));
@@ -115,13 +137,13 @@ public class Cube {
         }
     }
 
-    public static String  toDisplay(char [][] display){
+    public static String  toDisplay(String [][] display){
         StringBuilder builder = new StringBuilder();
         builder.append("\033[2J");
         builder.append("\033[H");
         for(int i = height-1; i > -1; i--){
             for (int j = 0; j < width; j++){
-                if (display[j][i] != '\u0000')
+                if (display[j][i] != null)
                     builder.append(display[j][i]);
                 else
                     builder.append(" ");
