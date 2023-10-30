@@ -1,11 +1,5 @@
 public class Cube {
     public static float r = 5.0f;
-    public static Shape shape = Shape.cube;
-
-    enum Shape{
-        cube,
-        triangle
-    }
 
     public static float A, B, C;
 
@@ -16,44 +10,30 @@ public class Cube {
     public static int y = height/2;
 
     public static String [][] buffer;
-    public static char [] faces = {'@', '#', '$', '%', '&', '*'};
+    public static float [][] zBuffer;
+    public static String [] stringFaces = {"@", "#", "$", "%", "&", "*"};
     public static float [][] verticies;
-    public static int [][] edges;
+    public static int [][] faces;
     //cube shape
     public static float [][] cubeVerticies = new float [][] {
         {-r, -r, -r}, {-r, -r, r}, {-r, r, -r}, {-r, r, r},
         {r, -r, -r}, {r, -r, r}, {r, r, -r}, {r, r, r}
     };
-    public static int[][] cubeEdges = {
-        {0, 1}, {1, 3}, {3, 2}, {2, 0},
-        {4, 5}, {5, 7}, {7, 6}, {6, 4},
-        {0, 4}, {1, 5}, {2, 6}, {3, 7}
+    public static int [][] cubeFaces = {
+        {0, 1, 2, 3}, {}, {},
+        {}, {}, {}
     };
 
-    //triangle shape
-    public static float [][] triangleVerticies = new float[][] {
-        //top
-        {0, r, 0}, {-r, -r, r}, {r, -r, r}, {r, -r, -r}
-    };
-    public static int[][] triangleEdges = {
-        {0, 1}, {0, 2}, {0, 3}, {1, 2}, {2, 3}, {3, 1}
-    };
     public static void main(String [] args) throws InterruptedException{
-        if (shape == Shape.cube){
             verticies = cubeVerticies;
-            edges = cubeEdges;
-        }
-        if (shape == Shape.triangle){
-            verticies = triangleVerticies;
-            edges = triangleEdges;
-        }
+            faces = cubeFaces;
         // zBuffer = new float [width][height];
         while (true){
             buffer = new String [width][height];
             A += 0.05f;
             B += 0.05f;
             C += 0.01f;
-            for (int i = 0; i < edges.length; i++) {
+            for (int i = 0; i < cubeFaces.length; i++) {
                 drawVector(
                     (int)Math.round(rotateX(verticies[edges[i][0]])*2) + x,
                     (int)Math.round(rotateY(verticies[edges[i][0]])) + y,
@@ -62,7 +42,7 @@ public class Cube {
                 );
             }
             System.out.print(toDisplay(buffer));
-            Thread.sleep(10);
+            Thread.sleep(30);
         }
     }
 
@@ -79,6 +59,10 @@ public class Cube {
 
     public static float rotateZ(float [] v) {//int i, int j, int k
         return (float)(v[2] * Math.cos(A) * Math.cos(B) - v[1] * Math.sin(A) * Math.cos(B) + v[0] * Math.sin(B));
+    }
+
+    public static void fill(int [][] face){
+
     }
 
     public static void drawVector(int x0, int y0, int x1, int y1){
@@ -134,6 +118,16 @@ public class Cube {
             }  
             else
                 D = D + 2*dx;
+        }
+    }
+
+    public static void plotPoint(int x, int y, float z, int face){
+        if(zBuffer[x][y] == 0.0f){
+            zBuffer[x][y] = z;
+            buffer[x][y] = stringFaces[face];
+        }
+        else if (zBuffer[x][y] < z){
+
         }
     }
 
