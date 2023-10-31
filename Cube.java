@@ -1,5 +1,5 @@
 public class Cube {
-    public static float r = 5.0f;
+    public static float r = 7.0f;
 
     public static float A, B, C;
 
@@ -9,41 +9,38 @@ public class Cube {
     public static int x = width/2;
     public static int y = height/2;
 
-    public static String [][] buffer;
+    public static char [][] buffer;
     public static float [][] zBuffer;
-    public static String [] stringFaces = {"@", "#", "$", "%", "&", "*"};
-    public static float [][] verticies;
-    public static int [][] faces;
-    
-    //cube shape
-    public static float [][] cubeVerticies = new float [][] {
-        {-r, -r, -r}, {-r, -r, r}, {-r, r, -r}, {-r, r, r},
-        {r, -r, -r}, {r, -r, r}, {r, r, -r}, {r, r, r}
-    };
-    public static int [][] cubeFaces = {
-        {1, 3, 7, 5}, {5, 7, 6, 4}, {7, 3, 2, 6},
-        {0, 1, 3, 2}, {0, 2, 6, 4}, {1, 0, 4, 5}
-    };
+    public static char [] faces = {'@', '#', '$', '%', '&', '*'};
 
     public static void main(String [] args) throws InterruptedException{
-        verticies = cubeVerticies;
-        faces = cubeFaces;
+        float [][] cubeVerticies = new float [][] {
+            {-r, -r, -r}, {-r, -r, r}, {-r, r, -r}, {-r, r, r},
+            {r, -r, -r}, {r, -r, r}, {r, r, -r}, {r, r, r}
+        };
+        int[][] cubeEdges = {
+            {0, 1}, {1, 3}, {3, 2}, {2, 0},
+            {4, 5}, {5, 7}, {7, 6}, {6, 4},
+            {0, 4}, {1, 5}, {2, 6}, {3, 7}
+        };
         zBuffer = new float [width][height];
+        // buffer[x][y] = '0';
         while (true){
-            buffer = new String [width][height];
+            buffer = new char [width][height];
             A += 0.05f;
             B += 0.05f;
             C += 0.01f;
-            for (int i = 0; i < cubeFaces.length; i++) {
+            for (int i = 0; i < 12; i++) {
                 drawVector(
-                    (int)Math.round(rotateX(verticies[edges[i][0]])*2) + x,
-                    (int)Math.round(rotateY(verticies[edges[i][0]])) + y,
-                    (int)Math.round(rotateX(verticies[edges[i][1]])*2) + x,
-                    (int)Math.round(rotateY(verticies[edges[i][1]])) + y
+                    (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][0]])*2) + x,
+                    (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][0]])) + y,
+                    (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][1]])*2) + x,
+                    (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][1]])) + y
                 );
             }
+            buffer[(int)Math.round(rotateX(cubeVerticies[cubeEdges[0][0]])*2) + x][(int)Math.round(rotateY(cubeVerticies[cubeEdges[0][0]])) + y] = 'X';
             System.out.print(toDisplay(buffer));
-            Thread.sleep(30);
+            Thread.sleep(80);
         }
     }
 
@@ -95,7 +92,7 @@ public class Cube {
         int D = (2 * dy) - dx;
         int y = y0;
         for (int x = x0; x < x1; x++){
-            buffer[x][y] = "\033[48;2;180;0;158m \033[0m";
+            buffer[x][y] = '.';
             if (D > 0) {
                 y = y + yi;
                 D = D + (2 * (dy - dx));
@@ -117,7 +114,7 @@ public class Cube {
         int x = x0;
 
         for (int y = y0; y < y1; y++){
-            buffer[x][y] = "\033[48;2;180;0;158m \033[0m";
+            buffer[x][y] = '.';
             if (D > 0) {
                 x = x + xi;
                 D = D + (2 * (dx - dy));
@@ -127,23 +124,13 @@ public class Cube {
         }
     }
 
-    public static void plotPoint(int x, int y, float z, int face){
-        if(zBuffer[x][y] == 0.0f){
-            zBuffer[x][y] = z;
-            buffer[x][y] = stringFaces[face];
-        }
-        else if (zBuffer[x][y] < z){
-            
-        }
-    }
-
-    public static String  toDisplay(String [][] display){
+    public static String  toDisplay(char [][] display){
         StringBuilder builder = new StringBuilder();
         builder.append("\033[2J");
         builder.append("\033[H");
         for(int i = height-1; i > -1; i--){
             for (int j = 0; j < width; j++){
-                if (display[j][i] != null)
+                if (display[j][i] != '\u0000')
                     builder.append(display[j][i]);
                 else
                     builder.append(" ");
