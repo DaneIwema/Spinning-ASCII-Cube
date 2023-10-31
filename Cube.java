@@ -20,14 +20,16 @@ public class Cube {
         {r, -r, -r}, {r, -r, r}, {r, r, -r}, {r, r, r}
     };
     public static int [][] cubeFaces = {
-        {0, 1, 2, 3}, {}, {},
-        {}, {}, {}
+        {}, {}, {},
+        {}, {}, {},
+        {}, {}, {},
+        {}, {}, {} //create triangles
     };
 
     public static void main(String [] args) throws InterruptedException{
-            verticies = cubeVerticies;
-            faces = cubeFaces;
-        // zBuffer = new float [width][height];
+        verticies = cubeVerticies;
+        faces = cubeFaces;
+        zBuffer = new float [width][height];
         while (true){
             buffer = new String [width][height];
             A += 0.05f;
