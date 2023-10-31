@@ -14,16 +14,15 @@ public class Cube {
     public static String [] stringFaces = {"@", "#", "$", "%", "&", "*"};
     public static float [][] verticies;
     public static int [][] faces;
+    
     //cube shape
     public static float [][] cubeVerticies = new float [][] {
         {-r, -r, -r}, {-r, -r, r}, {-r, r, -r}, {-r, r, r},
         {r, -r, -r}, {r, -r, r}, {r, r, -r}, {r, r, r}
     };
     public static int [][] cubeFaces = {
-        {}, {}, {},
-        {}, {}, {},
-        {}, {}, {},
-        {}, {}, {} //create triangles
+        {1, 3, 7, 5}, {5, 7, 6, 4}, {7, 3, 2, 6},
+        {0, 1, 3, 2}, {0, 2, 6, 4}, {1, 0, 4, 5}
     };
 
     public static void main(String [] args) throws InterruptedException{
@@ -48,6 +47,11 @@ public class Cube {
         }
     }
 
+    public float [] rotate(float [] coord){
+        float [] newCoord = {rotateX(coord), rotateY(coord), rotateZ(coord)};
+        return newCoord;
+    }
+
     public static float rotateX(float [] v){
         return (float)(v[1] * Math.sin(A) * Math.sin(B) * Math.cos(C) - v[2] * Math.cos(A) * Math.sin(B) * Math.cos(C) +
          v[1] * Math.cos(A) * Math.sin(C) + v[2] * Math.sin(A) * Math.sin(C) + v[0] * Math.cos(B) * Math.cos(C));
@@ -63,7 +67,7 @@ public class Cube {
         return (float)(v[2] * Math.cos(A) * Math.cos(B) - v[1] * Math.sin(A) * Math.cos(B) + v[0] * Math.sin(B));
     }
 
-    public static void fill(int [][] face){
+    public static void fill(int [] coord1, int [] coord2, int [] coord3, int [] coord4){
 
     }
 
@@ -129,7 +133,7 @@ public class Cube {
             buffer[x][y] = stringFaces[face];
         }
         else if (zBuffer[x][y] < z){
-
+            
         }
     }
 
