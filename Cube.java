@@ -63,10 +63,6 @@ public class Cube {
         return (float)(v[2] * Math.cos(A) * Math.cos(B) - v[1] * Math.sin(A) * Math.cos(B) + v[0] * Math.sin(B));
     }
 
-    public static void fill(int [] coord1, int [] coord2, int [] coord3, int [] coord4){
-
-    }
-
     public static void drawVector(int x0, int y0, int x1, int y1){
         if (Math.abs(y1 - y0) < Math.abs(x1 - x0))
             if (x0 > x1)
@@ -91,7 +87,14 @@ public class Cube {
         int D = (2 * dy) - dx;
         int y = y0;
         for (int x = x0; x < x1; x++){
-            buffer[x][y] = '-';
+            if(dy/dx < 1 && dy/dx >= 0){
+                if(x0 < x1)
+                    buffer[x][y] = '/';
+                else
+                    buffer[x][y] = '\\';
+            } 
+            else
+                buffer[x][y] = '-';
             if (D > 0) {
                 y = y + yi;
                 D = D + (2 * (dy - dx));
@@ -111,9 +114,16 @@ public class Cube {
         }
         int D = (2 * dx) - dy;
         int x = x0;
-
+        
         for (int y = y0; y < y1; y++){
-            buffer[x][y] = '|';
+            if(dx==0 || dy/dx > 1){
+                if(x0 < x1)
+                    buffer[x][y] = '/';
+                else
+                    buffer[x][y] = '\\';
+            } 
+            else
+                buffer[x][y] = '|';
             if (D > 0) {
                 x = x + xi;
                 D = D + (2 * (dx - dy));
