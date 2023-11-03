@@ -9,8 +9,8 @@ public class Cube {
     public static int x = width/2;
     public static int y = height/2;
 
-    public static char [][] buffer;
-    public static float [][] zBuffer;
+    public static char [] buffer;
+    public static float [] zBuffer;
     public static char [] faces = {'@', '#', '$', '%', '&', '*'};
 
     public static void main(String [] args) throws InterruptedException{
@@ -23,10 +23,10 @@ public class Cube {
             {4, 5}, {5, 7}, {7, 6}, {6, 4},
             {0, 4}, {1, 5}, {2, 6}, {3, 7}
         };
-        zBuffer = new float [width][height];
+        zBuffer = new float [width*height];
         // buffer[x][y] = '0';
         while (true){
-            buffer = new char [width][height];
+            buffer = new char [width*height];
             A += 0.05f;
             B += 0.05f;
             C += 0.01f;
@@ -87,7 +87,8 @@ public class Cube {
         int D = (2 * dy) - dx;
         int y = y0;
         for (int x = x0; x < x1; x++){
-            buffer[x][y] = '-';
+            if()
+            buffer[y*width+x] = '-';
             if (D > 0) {
                 y = y + yi;
                 D = D + (2 * (dy - dx));
@@ -108,7 +109,7 @@ public class Cube {
         int D = (2 * dx) - dy;
         int x = x0;
         for (int y = y0; y < y1; y++){
-            buffer[x][y] = '|';
+            buffer[y*width+x] = '|';
             if (D > 0) {
                 x = x + xi;
                 D = D + (2 * (dx - dy));
@@ -118,18 +119,17 @@ public class Cube {
         }
     }
 
-    public static String  toDisplay(char [][] display){
+    public static String  toDisplay(char [] display){
         StringBuilder builder = new StringBuilder();
         builder.append("\033[2J");
         builder.append("\033[H");
-        for(int i = height-1; i > -1; i--){
-            for (int j = 0; j < width; j++){
-                if (display[j][i] != '\u0000')
-                    builder.append(display[j][i]);
-                else
-                    builder.append(" ");
-            }
-            builder.append("\n");
+        for(int i = 0; i <height*width; i++){
+            if(buffer[i]=='\0')
+                builder.append(" ");
+            else
+                builder.append(buffer[i]);
+            if ((i + 1)% width == 0)
+                builder.append("\n");
         }
         return builder.toString();
     }
