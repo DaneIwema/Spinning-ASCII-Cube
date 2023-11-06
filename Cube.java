@@ -87,7 +87,6 @@ public class Cube {
         int D = (2 * dy) - dx;
         int y = y0;
         for (int x = x0; x < x1; x++){
-            if()
             buffer[y*width+x] = '-';
             if (D > 0) {
                 y = y + yi;
