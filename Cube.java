@@ -86,7 +86,7 @@ public class Cube {
         int D = (2 * dy) - dx;
         int y = y0;
         for (int x = x0; x < x1; x++){
-            buffer[y*width+x] = '-';
+            buffer[y*width+x] = '*';
             if (D > 0) {
                 y = y + yi;
                 D = D + (2 * (dy - dx));
@@ -107,7 +107,7 @@ public class Cube {
         int D = (2 * dx) - dy;
         int x = x0;
         for (int y = y0; y < y1; y++){
-            buffer[y*width+x] = '|';
+            buffer[y*width+x] = '*';
             if (D > 0) {
                 x = x + xi;
                 D = D + (2 * (dx - dy));
