@@ -23,9 +23,9 @@ public class Cube {
             {4, 5}, {5, 7}, {7, 6}, {6, 4},
             {0, 4}, {1, 5}, {2, 6}, {3, 7}
         };
-        zBuffer = new float [width*height];
         while (true){
             buffer = new char [width*height];
+            zBuffer = new float [width*height];
             A += 0.05f;
             B += 0.05f;
             C += 0.01f;
@@ -58,7 +58,7 @@ public class Cube {
                v[0] * Math.cos(B) * Math.sin(C));
     }
 
-    public static float rotateZ(float [] v) {//int i, int j, int k
+    public static float rotateZ(float [] v) {
         return (float)(v[2] * Math.cos(A) * Math.cos(B) - v[1] * Math.sin(A) * Math.cos(B) + v[0] * Math.sin(B));
     }
 
