@@ -24,7 +24,6 @@ public class Cube {
             {0, 4}, {1, 5}, {2, 6}, {3, 7}
         };
         zBuffer = new float [width*height];
-        // buffer[x][y] = '0';
         while (true){
             buffer = new char [width*height];
             A += 0.05f;
