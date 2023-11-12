@@ -10,7 +10,6 @@ public class Cube {
     public static int y = height/2;
 
     public static char [] buffer;
-    public static float [] zBuffer;
     public static char [] faces = {'@', '#', '$', '%', '&', '*'};
 
     public static void main(String [] args) throws InterruptedException{
@@ -25,7 +24,6 @@ public class Cube {
         };
         while (true){
             buffer = new char [width*height];
-            zBuffer = new float [width*height];
             A += 0.05f;
             B += 0.05f;
             C += 0.01f;
