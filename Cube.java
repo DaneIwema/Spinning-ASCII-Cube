@@ -36,7 +36,7 @@ public class Cube {
                 );
             }
             System.out.print(toDisplay(buffer));
-            Thread.sleep(80);
+            Thread.sleep(40);
         }
     }
 
