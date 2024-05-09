@@ -4,13 +4,19 @@ public class Cube {
     public static float A, B, C;
 
     public static int height = (int)(r * 5) + 1;
-    public static int width = (int)Math.round(r*12.5f) + 1;
+    public static int width = (int)Math.round(r * 12.5f) + 1;
 
     public static int x = width/2;
     public static int y = height/2;
 
     public static char [] buffer;
     public static char [] faces = {'@', '#', '$', '%', '&', '*'};
+
+    public static long now;
+    public static long updateTime;
+    public static long wait;
+
+    public static int targetFPS = 16;
 
     public static void main(String [] args) throws InterruptedException{
         float [][] cubeVerticies = new float [][] {
@@ -22,21 +28,29 @@ public class Cube {
             {4, 5}, {5, 7}, {7, 6}, {6, 4},
             {0, 4}, {1, 5}, {2, 6}, {3, 7}
         };
+        wait = 34;
         while (true){
-            buffer = new char [width*height];
-            A += 0.05f;
-            B += 0.05f;
-            C += 0.01f;
-            for (int i = 0; i < 12; i++) {
-                drawVector(
-                    (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][0]])*2) + x,
-                    (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][0]])) + y,
-                    (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][1]])*2) + x,
-                    (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][1]])) + y
-                );
+
+            now = System.currentTimeMillis();
+            if (wait > targetFPS) {
+                buffer = new char [width * height];
+                A += 0.05f;
+                B += 0.05f;
+                C += 0.01f;
+                for (int i = 0; i < 12; i++) {
+                    drawVector(
+                        (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][0]])*2) + x,
+                        (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][0]])) + y,
+                        (int)Math.round(rotateX(cubeVerticies[cubeEdges[i][1]])*2) + x,
+                        (int)Math.round(rotateY(cubeVerticies[cubeEdges[i][1]])) + y
+                    );
+                }
+                System.out.print(toDisplay(buffer));
+                wait = 0;
             }
-            System.out.print(toDisplay(buffer));
-            Thread.sleep(40);
+
+            updateTime = System.currentTimeMillis();
+            wait += updateTime - now;
         }
     }
 
@@ -59,6 +73,8 @@ public class Cube {
     public static float rotateZ(float [] v) {
         return (float)(v[2] * Math.cos(A) * Math.cos(B) - v[1] * Math.sin(A) * Math.cos(B) + v[0] * Math.sin(B));
     }
+
+    //TODO drawFace(int[] face)
 
     public static void drawVector(int x0, int y0, int x1, int y1){
         if (Math.abs(y1 - y0) < Math.abs(x1 - x0))
