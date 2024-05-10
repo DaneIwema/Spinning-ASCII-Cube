@@ -11,6 +11,8 @@ public class Cube {
 
     public static char [] buffer;
     public static char [] faces = {'@', '#', '$', '%', '&', '*'};
+    public static int [][] line1;
+    public static int [][] line2;
 
     public static long now;
     public static long updateTime;
@@ -28,6 +30,7 @@ public class Cube {
             {4, 5}, {5, 7}, {7, 6}, {6, 4},
             {0, 4}, {1, 5}, {2, 6}, {3, 7}
         };
+        
         wait = 34;
         while (true){
 
@@ -74,7 +77,53 @@ public class Cube {
         return (float)(v[2] * Math.cos(A) * Math.cos(B) - v[1] * Math.sin(A) * Math.cos(B) + v[0] * Math.sin(B));
     }
 
-    //TODO drawFace(int[] face)
+    /* TODO drawFace(int[] face) method */
+    public static void drawFace(int[] face) {
+
+        line1 = new int[][2];
+
+        /* Draws from vec0 to vec1 and vec2 to vec3 */
+        int x0 = face[0], y0 = face[1]; //vec0
+        int x1 = face[2], y1 = face[3]; //vec1
+        int x2 = face[4], y2 = face[5]; //vec2
+        int x3 = face[6], y3 = face[7]; //vec3
+
+        /* Setup from vec0 to vec1 */
+        int dx = Math.abs(x1 - x0);
+        int sx = x0 < x1 ? 1 : -1;
+        int dy = -Math.abs(y1 - y0);
+        int sy = y0 < y1 ? 1 : -1;
+        int error = dx + dy;
+
+        /* Setup for vec2 to vec3 */
+        int dx2 = Math.abs(x3 - x2);
+        int sx2 = x2 < x3 ? 1 : -1;
+        int dy2 = -Math.abs(y3 - y2);
+        int sy2 = y2 < y3 ? 1 : -1;
+        int error2 = dx2 + dy2;
+        
+        while (true) {
+
+            buffer[y0 * width + x0] = '*';
+
+
+            if (x0 == x1 && y0 == y1) break;
+            int e2 = 2 * error;
+            if (e2 >= dy) {
+                if (x0 == x1) break;
+                error = error + dy;
+                x0 = x0 + sx;
+            }
+            if (e2 <= dx) {
+                if (y0 == y1) break;
+                error = error + dx;
+                y0 = y0 + sy;
+            }
+        }
+
+
+
+    }
 
     public static void drawVector(int x0, int y0, int x1, int y1){
         if (Math.abs(y1 - y0) < Math.abs(x1 - x0))
